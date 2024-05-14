@@ -3,7 +3,7 @@ import { createContext } from "react";
 
 const Backend_Server = "http://localhost:5000";
 
-const SocketContext = createContext<any | null>(null);
+export const SocketContext = createContext<any | null>(null);
 
 const socket = SocketIoClient(Backend_Server);
 
