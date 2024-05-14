@@ -1,5 +1,8 @@
 import SocketIoClient from "socket.io-client";
-import { createContext } from "react";
+import { createContext, useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
+import {v4 as UUIDv4} from "uuid";
+import Peer from "peerjs";
 
 const Backend_Server = "http://localhost:5000";
 
@@ -12,7 +15,28 @@ interface Props{
 }
 
 export const SocketProvider: React.FC<Props> = ({children}) => {
+    
+    const navigate = useNavigate();
+    const [user, setUser] = useState<Peer>(); //new peer user
+    
+
+
+    useEffect(() => {
+
+        const userId = UUIDv4();
+        const newPeer = new Peer(userId);
+
+        setUser(newPeer);
+
+        const enterRoom = ({roomId} : {roomId: string}) => {
+            navigate(`/room/${roomId}`);
+        }
+        socket.on("room-created", enterRoom);
+
+    
+    },[]);
+    
     return (
-        <SocketContext.Provider value={{socket}}>{children}</SocketContext.Provider>
+        <SocketContext.Provider value={{socket, user}}>{children}</SocketContext.Provider>
     )
 }
