@@ -5,7 +5,7 @@ import UserFeedPlayer from "../Components/UserFeedPlayer";
 
 const Room: React.FC = () => {
     const {id} = useParams();
-    const {socket, user, stream} = useContext(SocketContext);
+    const {socket, user, stream, peers} = useContext(SocketContext);
     
     const fetchParticipantsList = ({ roomId, participants }: { roomId: string, participants: string[] }) => {
         console.log("fetched room participants");
@@ -20,7 +20,17 @@ const Room: React.FC = () => {
     return(
         <div>
             room: {id}
+            your own feed
             <UserFeedPlayer stream={stream} />
+            <div>
+                <br />
+                others feed
+                {Object.keys(peers).map((peerId) => (
+                    <>
+                        <UserFeedPlayer key={peerId} stream={peers[peerId].stream} />
+                    </>
+                ))}
+            </div>
         </div>
     )
 }
