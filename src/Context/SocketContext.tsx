@@ -32,17 +32,18 @@ export const SocketProvider: React.FC<Props> = ({children}) => {
     useEffect(() => {
 
         const userId = UUIDv4();
-        const newPeer = new Peer(userId, {
-            host: "localhost",
-            port: 9000,
-            path: "/myapp"
-        });
+        // const newPeer = new Peer(userId, { // use this localhost when you install peer js server in your local
+        //     host: "localhost",
+        //     port: 9000,
+        //     path: "/myapp"
+        // });
+        const newPeer = new Peer(userId);
 
         setUser(newPeer);
         fetchUserFeed();
 
         const enterRoom = ({roomId} : {roomId: string}) => {
-            navigate(`/room/${roomId}`);
+            navigate(`/${roomId}`);
         }
         socket.on("room-created", enterRoom);
 
